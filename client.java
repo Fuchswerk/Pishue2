@@ -4,55 +4,66 @@ import java.net.*;
 import java.util.*;
 
 
-public class Handler implements Runnable {
-     
-  private Socket client;
+public class Client implements Runnable {
+	// String NAME fürs Protokoll connect:NAME
+	String NAME = new String();
 	
-	/**Konstruktor
-	* Erstellt ein Objekt der Klasse Handler 
-	*/
-	public Handler(Socket client){
-		this.client = client;
-	}
-	
-	@Override
-	/** Methode run() des Interface Runnable
-	 * @post führt den run() aus
+	/**
+	 * Main-Methode
 	 */
-	public void run() {
-		
-		try{
-		//Streams
-		OutputStream out = client.getOutputStream();
-		PrintWriter writer = new PrintWriter(out);
-		
-		InputStream in = client.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		//-------------------------------------------------------------------
-							
-		String s = null;
-		
-		//Ausgabe der Zeilen in While-schleife
-		while((s = reader.readLine()) != null){
-			writer.write(s + "\n");
-			writer.flush();
-			System.out.println("Empfangen vom Client:" +s);
-		}
-		//schließen des Reader und des Writer
-		writer.close();
-		reader.close();
-		
-		//Schließen des Clients
-		client.close();
-		
-		}
-		catch (Exception e){
-			
-		}
-		
+	public static void main(String[] args) {
+	 	new Thread(new Client()).start();
+	 	
 	}
-	public void broadcast(){
-		
+
+	@Override
+	public void run() {
+		 //Scanner-Objekt um Eingaben einzulesen
+		 Scanner eingabe = new Scanner(System.in);	
+		 
+	     // Socket für den Client im try-catch
+		 try {
+			Socket client = new Socket("localhost", 5555);
+			System.out.println("Client is started");
+			
+			System.out.print("Username eingeben:");
+			NAME = eingabe.nextLine();
+			
+			//Streams
+			OutputStream out = client.getOutputStream();
+			PrintWriter writer = new PrintWriter(out);
+			
+			InputStream in = client.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			//-------------------------------------------------------------------
+			
+			writer.write("connect:");
+			
+			System.out.print("Eingabe: ");
+            String castToServer = eingabe.nextLine();			
+			
+			//Funktion um Nachrichten an den Server zu senden
+			writer.write("message:"+NAME+":"+castToServer+"\n");
+			writer.flush(); //Um zu aktualisieren
+			
+			String s = null;
+			
+			while((s = reader.readLine()) != null){
+				System.out.println("Empfangen vom Server:" +s);
+			}
+			
+			//schließen des Writer und reader
+			writer.close();
+			reader.close();
+			
+		} catch (UnknownHostException e) {
+			
+			System.out.println("connect:Host is unknown");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Exception-Handling
+			e.printStackTrace();
+		}
 	}
 
 }
