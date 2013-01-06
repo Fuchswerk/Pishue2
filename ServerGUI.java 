@@ -1,0 +1,92 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+/**
+* @author Roland Fuchs
+* @email RoFu@roli-fuchs.de
+*/
+@SuppressWarnings("serial")
+public class ServerGUI extends JFrame implements ActionListener {
+    Server server = new Server();
+  ServerGUI() {
+		super("Chat Server");
+
+		// Hauptpanel
+		JPanel topPanel = new JPanel();
+		topPanel.add(new JLabel(" IP:"));
+		JTextField ipTextField = new JTextField("localhost", 10);
+		ipTextField.setEnabled(false);
+		topPanel.add(ipTextField);
+		topPanel.add(new JLabel(" Port:"));
+		topPanel.add(new JTextField("7575", 4));
+		JButton startButton = new JButton("Start Server");
+		startButton.setActionCommand("start");
+		startButton.addActionListener(this);
+		topPanel.add(startButton);
+
+		JButton stopButton = new JButton("Stop Server");
+		stopButton.setActionCommand("stop");
+		stopButton.addActionListener(this);
+		topPanel.add(stopButton);
+
+		// Log für den Server
+		JTextArea messages = new JTextArea();
+		messages.setEditable(false);
+
+		// Auflistung für die User
+		JList users = new JList(new String[]{});
+		users.setPrototypeCellValue("XXXXXXXXXXXXXXXX");
+		
+		// Textfeld für neue Nachrichten und den Stream
+		JTextField messageTextField = new JTextField();
+		messageTextField.setActionCommand("send");
+		messageTextField.addActionListener(this);
+
+		// Frame 
+		add(topPanel, "North");
+		add(new JScrollPane(users), "East");
+		add(new JScrollPane(messages), "Center");
+		add(messageTextField, "South"); // "South" == BorderLayout.SOUTH
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600, 200);
+		setVisible(true);
+
+	}
+    /**
+     * Methode für den Action-Perform
+     */
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		
+		if (command.equals("start")) {
+
+			// Server Starten
+			
+		} else if (command.equals("stop")) {
+			// TODO Server sauber schließen
+			
+		} else if (command.equals("send")) {
+			
+			// ...
+			
+		} // else ...
+
+	}
+
+
+	public static void main(String[] args) {
+		new ServerGUI();
+
+	}
+
+
+}
