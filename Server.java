@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 public class Server {
   static int clients= 0;
 	static ServerSocket server;
+	static TeilnehmerListe teilnehmer;
 	/**
 	 * Main-Methode
 	 * @param Normalaufruf der Server-Klasse
