@@ -4,11 +4,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 public class TeilnehmerListe {
-        private static ArrayList<Handler> chatTeilehmer = new ArrayList<Handler>();
+        private static ArrayList<Teilnehmer> chatTeilehmer = new ArrayList<Teilnehmer>();
         private int size;
         private Server csp;
-        static String NAME;
-        
+       
         //Status des Servers
        
         boolean started;
@@ -23,21 +22,21 @@ public class TeilnehmerListe {
                 this.size = size;
                
         }
-        public List<Handler> getTeilnehmerListe() {
+        public List<Teilnehmer> getTeilnehmerListe() {
                 return chatTeilehmer;
         }
        
-        public void addTeilnehmer(Handler c) {
+        public void addTeilnehmer(Teilnehmer c) {
                 if(chatTeilehmer.size()>=size)throw new IllegalStateException();
                 chatTeilehmer.add(c);
         }
        
-        public void removeTeilnehmer(Handler c) {
+        public void removeTeilnehmer(Teilnehmer c) {
                 if(chatTeilehmer.size()<=0)throw new IllegalStateException();
                 chatTeilehmer.remove(c);
         }
        
-        public boolean contains(Handler c){
+        public boolean contains(Teilnehmer c){
                 if(chatTeilehmer.contains(c)){
                         return true;
                 }else{
@@ -50,12 +49,12 @@ public class TeilnehmerListe {
         * Gibt den Zustand des Servers zurück.
         * @return true if server was started, otherwise false
         */      
-        public boolean isStarted() {
+        public synchronized boolean isStarted() {
                 return started;
         }
        
        
-        public String gibUserListe(){
+        public synchronized String gibUserListe(){
                 StringBuilder userListe =new StringBuilder("");
                 for (int i = 0; i < size; i++) {
                         userListe.append(chatTeilehmer.get(i));
@@ -64,8 +63,8 @@ public class TeilnehmerListe {
         }
        
        
-        public Handler[] gibVerbindungen(){
-               Handler[] ch = new Handler[size];
+        public synchronized Teilnehmer[] gibVerbindungen(){
+               Teilnehmer[] ch = new Teilnehmer[size];
                
                 for (int i = 0; i < size; i++) {
                         chatTeilehmer.get(i).broadcast();
