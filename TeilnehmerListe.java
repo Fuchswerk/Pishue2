@@ -7,7 +7,8 @@ public class TeilnehmerListe {
         private static ArrayList<Handler> chatTeilehmer = new ArrayList<Handler>();
         private int size;
         private Server csp;
-       
+        static String NAME;
+        
         //Status des Servers
        
         boolean started;
