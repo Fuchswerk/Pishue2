@@ -7,13 +7,15 @@ import java.util.*;
 public class Handler implements Runnable {
      
 	private Socket client;
-	TeilnehmerListe teilnehmer = new Teilnehmer(3);
+	TeilnehmerListe teilnehmer = new TeilnehmerListe(3);
+
 	
 	/**Konstruktor
 	* Erstellt ein Objekt der Klasse Handler 
 	*/
 	public Handler(Socket client){
 		this.client = client;
+		Teilnehmer clienttm = new Teilnehmer(client); 
 	}
 	
 	@Override
@@ -22,7 +24,6 @@ public class Handler implements Runnable {
 	 */
 	public void run() {
 		
-	
 		try{
 		//Streams
 		OutputStream out = client.getOutputStream();
@@ -36,10 +37,9 @@ public class Handler implements Runnable {
 		
 		//Ausgabe der Zeilen in While-schleife
 		while((s = reader.readLine()) != null){
-			if(/**Teilnehmer schon vorhanden**/){ 	
-            writer.write("Name schon vorhanden");
-            }
-					
+			String namen = teilnehmer.gibUserListe();
+			
+			
 			writer.write(s + "\n");
 			writer.flush();
 			System.out.println("Empfangen vom Client:" +s);
@@ -57,9 +57,5 @@ public class Handler implements Runnable {
 			
 		}
 		
-	}
-	public void broadcast(){
-		
-	}
-
+    }
 }
