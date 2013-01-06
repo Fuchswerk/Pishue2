@@ -7,7 +7,7 @@ import java.util.*;
 public class Handler implements Runnable {
      
 	private Socket client;
-	Teilnehmer teilnehmer = new Teilnehmer();
+	TeilnehmerListe teilnehmer = new Teilnehmer(3);
 	
 	/**Konstruktor
 	* Erstellt ein Objekt der Klasse Handler 
