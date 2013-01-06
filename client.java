@@ -49,7 +49,7 @@ public class Client implements Runnable {
 			String s = null;
 			
 			while((s = reader.readLine()) != null){
-				System.out.println("Empfangen vom Server:" +s);
+				System.out.println("message:"+NAME+": "+s);
 			}
 			
 			//schließen des Writer und reader
