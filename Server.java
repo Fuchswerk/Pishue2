@@ -33,13 +33,16 @@ public class Server {
 
 				//neuer Client in den Thread-Pool
 				executor.execute(new Handler(client));
-						
+			   
 				//Überprüfen ungewollter Verlust
 				if(client.isClosed()){
 					OutputStream out = client.getOutputStream();
 					PrintWriter writer = new PrintWriter(out);
 					writer.write("disconnect:invalid_command");
 				}
+				OutputStream out = client.getOutputStream();
+				PrintWriter writer = new PrintWriter(out);
+				writer.write("connect:ok");
 				
 				} catch (IOException e) {
 					//TODO Auto-generated catch-block
