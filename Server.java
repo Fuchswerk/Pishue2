@@ -10,6 +10,7 @@ public class Server {
 	static int clients= 0;
 	static ServerSocket server;
 	static TeilnehmerListe teilnehmer;
+	
 	/**
 	 * Main-Methode
 	 * @param Normalaufruf der Server-Klasse
@@ -29,15 +30,23 @@ public class Server {
 									
 				//Client erzeugen
 				Socket client = server.accept();		
-			
+
 				//neuer Client in den Thread-Pool
 				executor.execute(new Handler(client));
 						
+				//Überprüfen ungewollter Verlust
+				if(client.isClosed()){
+					OutputStream out = client.getOutputStream();
+					PrintWriter writer = new PrintWriter(out);
+					writer.write("disconnect:invalid_command");
+				}
+				
 				} catch (IOException e) {
 					//TODO Auto-generated catch-block
                     e.printStackTrace();
 			}
 			clients++;
+			
 		  }
 		}else{
 		   Socket client = server.accept();
@@ -54,5 +63,6 @@ public class Server {
 		} 			
 
 	}
+	
 	
 }
